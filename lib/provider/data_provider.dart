@@ -1,4 +1,5 @@
 import 'package:construction_app/model/drawing_model.dart';
+import 'package:construction_app/model/marker_model.dart';
 import 'package:flutter/widgets.dart';
 
 class DataProvider with ChangeNotifier {
@@ -32,5 +33,14 @@ class DataProvider with ChangeNotifier {
       ),
     );
     notifyListeners();
+  }
+
+  void addNewMarker(DrawingModel drawingModel, int index, MarkerModel markerModel){
+    _drawings[index].markers.add(markerModel);
+    notifyListeners();
+  }
+
+  List<MarkerModel> getMarkers(int index){
+    return _drawings[index].markers;
   }
 }

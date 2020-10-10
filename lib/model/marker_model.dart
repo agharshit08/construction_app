@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MarkerModel{
-  final int x;
-  final int y;
+  final double x;
+  final double y;
   final String time;
   final String title;
   final String description;
