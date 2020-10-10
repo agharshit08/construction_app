@@ -1,3 +1,4 @@
+import 'package:construction_app/routes.dart';
 import 'package:construction_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeScreen(),
+      initialRoute: HomeScreen.routeName,
+      routes: Routes.getRoutes()
     );
   }
 }

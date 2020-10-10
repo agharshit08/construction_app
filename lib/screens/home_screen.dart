@@ -4,6 +4,7 @@ import 'package:construction_app/widgets/drawing_card_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
+  static final String routeName = '/';
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
