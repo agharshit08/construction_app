@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "502769235778",
+    "firebase_url": "https://coupler-4cb82.firebaseio.com",
+    "project_id": "coupler-4cb82",
+    "storage_bucket": "coupler-4cb82.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502769235778:android:b48e43642351244535badb",
+        "android_client_info": {
+          "package_name": "com.example.contruction"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502769235778-7dalfogdv0hp9viacu39am63315ipe7t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuCyEbs9L_1HTvkjnZG5DL1Ve283nTyec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502769235778-7dalfogdv0hp9viacu39am63315ipe7t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

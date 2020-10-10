@@ -16,6 +16,8 @@ dependencies:
   provider: ^4.3.2+2
   positioned_tap_detector: ^1.0.3
   photo_view: ^0.10.2
+  firebase_core:
+  cloud_firestore:
 
 
 dev_dependencies:
