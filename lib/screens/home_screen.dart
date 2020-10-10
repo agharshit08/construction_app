@@ -1,4 +1,5 @@
 import 'package:construction_app/model/drawing_model.dart';
+import 'package:construction_app/screens/add_drawing.dart';
 import 'package:construction_app/size_config.dart';
 import 'package:construction_app/widgets/drawing_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,6 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Drawings'),
         centerTitle: true,
-        backgroundColor: Colors.teal,
       ),
       body: Container(
         height: SizeConfig.blockSizeVertical * 85,
@@ -38,6 +38,12 @@ class HomeScreen extends StatelessWidget {
             )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.pushNamed(context, AddDrawingScreen.routeName);
+        },
       ),
     );
   }
