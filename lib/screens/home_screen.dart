@@ -1,4 +1,3 @@
-import 'package:construction_app/model/drawing_model.dart';
 import 'package:construction_app/provider/data_provider.dart';
 import 'package:construction_app/screens/add_drawing.dart';
 import 'package:construction_app/size_config.dart';
@@ -14,7 +13,7 @@ class HomeScreen extends StatelessWidget {
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Drawings'),
+        title: Text('Drawings: ' + listOfDrawings.length.toString()),
         centerTitle: true,
       ),
       body: Container(
@@ -22,9 +21,9 @@ class HomeScreen extends StatelessWidget {
         child: ListView.builder(
           itemCount: listOfDrawings.length,
           itemBuilder: (BuildContext context, int index) =>
-              DrawingCardWidget(listOfDrawings[index]),
+              DrawingCardWidget(listOfDrawings[index], index),
         ),
-      ),
+      ), 
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {

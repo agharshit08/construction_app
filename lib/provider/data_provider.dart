@@ -22,12 +22,15 @@ class DataProvider with ChangeNotifier {
   List<DrawingModel> get drawings => _drawings;
 
   void addNewDrawing(String title) {
-    drawings.add(DrawingModel(
+    drawings.add(
+      DrawingModel(
         drawingId: '3',
         imageUrl: 'assets/images/construction.jpg',
         time: DateTime.now().toString(),
         title: title,
-        markers: []));
+        markers: [],
+      ),
+    );
     notifyListeners();
   }
 }
