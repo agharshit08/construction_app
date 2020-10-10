@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:construction_app/provider/data_provider.dart';
 import 'package:construction_app/size_config.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class AddDrawingScreen extends StatefulWidget {
   static final String routeName = '/addDrawingScreen';
@@ -79,6 +81,9 @@ class _AddDrawingScreenState extends State<AddDrawingScreen> {
                 return;
               }
               // Add to db and list here.
+              Provider.of<DataProvider>(context, listen: false)
+                  .addNewDrawing(_title);
+              Navigator.of(context).pop();
               print('Submitted');
             },
             child: Text(
