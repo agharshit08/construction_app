@@ -43,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: listOfDrawings.length,
                     itemBuilder: (BuildContext context, int index) =>
-                        DrawingCardWidget(listOfDrawings[index], index),
+                        DrawingCardWidget(listOfDrawings[index]),
                   ),
                 )
               : Center(

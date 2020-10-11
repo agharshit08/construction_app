@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:construction_app/model/drawing_model.dart';
 import 'package:construction_app/model/marker_model.dart';
 import 'package:construction_app/provider/data_provider.dart';
@@ -10,8 +11,7 @@ import 'package:provider/provider.dart';
 class DrawingScreen extends StatefulWidget {
   static final String routeName = '/drawingScreen';
   final DrawingModel drawingModel;
-  final int index;
-  DrawingScreen({this.drawingModel, this.index});
+  DrawingScreen({this.drawingModel});
 
   @override
   _DrawingScreenState createState() => _DrawingScreenState();
@@ -21,10 +21,12 @@ class _DrawingScreenState extends State<DrawingScreen> {
   bool _switchOn = false;
   String _title;
   String _description;
+  List _markers;
 
   @override
   void initState() {
     super.initState();
+    _markers = widget.drawingModel.markers;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -65,11 +67,12 @@ class _DrawingScreenState extends State<DrawingScreen> {
                 FlatButton(
                     onPressed: () {
                       MarkerModel markerModel = MarkerModel(
-                          x: position.global.dx,
-                          y: position.global.dy,
-                          time: DateTime.now().toString(),
-                          title: _title,
-                          description: _description);
+                        x: position.global.dx,
+                        y: position.global.dy,
+                        time: DateTime.now().toString(),
+                        title: _title,
+                        description: _description,
+                      );
                       // Provider.of<DataProvider>(context, listen: false)
                       //     .addNewMarker(
                       //         widget.drawingModel, widget.index, markerModel);
@@ -117,9 +120,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Text('Title: ' + marker.title),
             ),
-            SizedBox(
-              height: 20.0
-            ),
+            SizedBox(height: 20.0),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text('Description: ' + marker.description),
@@ -134,7 +135,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
   }
 
   Stack _buildImageWithMarkers(double width) {
-    final List<MarkerModel> markersList = widget.drawingModel.markers;
+    final List markersList = widget.drawingModel.markers;
 
     List<Widget> markersWidget = [];
 
@@ -145,7 +146,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
           top: marker.y,
           child: IconButton(
             icon: Icon(Icons.location_city_sharp),
-            color: Colors.purple,
+            color: Colors.red,
             onPressed: () {
               _showMarkerDetails(marker);
             },
@@ -158,8 +159,11 @@ class _DrawingScreenState extends State<DrawingScreen> {
       children: [
         PositionedTapDetector(
           onDoubleTap: (position) => _addMarker(position),
-          child: Image.asset(widget.drawingModel.imageUrl,
-              width: width, fit: BoxFit.cover),
+          child: Image(
+            image: CachedNetworkImageProvider(widget.drawingModel.imageUrl),
+            fit: BoxFit.cover,
+            width: width,
+          ),
         ),
         ...markersWidget
       ],
@@ -168,9 +172,10 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   PhotoView buildZoomableImage() {
     return PhotoView(
-        imageProvider: AssetImage(
-      widget.drawingModel.imageUrl,
-    ));
+      imageProvider: CachedNetworkImageProvider(
+        widget.drawingModel.imageUrl,
+      ),
+    );
   }
 
   Row _switchZoomStatus() {

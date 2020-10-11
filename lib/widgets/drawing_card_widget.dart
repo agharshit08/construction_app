@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 
 class DrawingCardWidget extends StatelessWidget {
   final DrawingModel drawingModel;
-  final int index;
-  DrawingCardWidget(this.drawingModel, this.index);
+  DrawingCardWidget(this.drawingModel);
 
   final TextStyle textStyle = TextStyle(
     fontWeight: FontWeight.bold,
@@ -22,7 +21,6 @@ class DrawingCardWidget extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => DrawingScreen(
               drawingModel: drawingModel,
-              index: index,
             ),
           ),
         );
