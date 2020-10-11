@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:construction_app/model/drawing_model.dart';
 import 'package:construction_app/provider/data_provider.dart';
+import 'package:construction_app/screens/markers_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:positioned_tap_detector/positioned_tap_detector.dart';
@@ -198,6 +199,21 @@ class _DrawingScreenState extends State<DrawingScreen> {
     );
   }
 
+  Widget _buildShowMarkersButton() {
+    return FlatButton(
+      onPressed: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => MarkersScreen(_markers)));
+      },
+      child: Text(
+        'View Markers',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -206,9 +222,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.drawingModel.title),
-        actions: [
-          _switchZoomStatus(),
-        ],
+        actions: [_switchZoomStatus(), _buildShowMarkersButton()],
       ),
       body: SingleChildScrollView(
         child: Container(
