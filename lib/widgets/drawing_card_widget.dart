@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:construction_app/functions/custom_functions.dart';
 import 'package:construction_app/model/drawing_model.dart';
 import 'package:construction_app/screens/drawing_screen.dart';
 import 'package:construction_app/size_config.dart';
@@ -47,7 +48,7 @@ class DrawingCardWidget extends StatelessWidget {
             ),
             Text(drawingModel.title, style: textStyle),
             Text(
-              drawingModel.time,
+              CustomFunctions.getDateInSocialFormat(drawingModel.time),
               style: textStyle,
             ),
             Text(

@@ -1,3 +1,4 @@
+import 'package:construction_app/functions/custom_functions.dart';
 import 'package:flutter/material.dart';
 
 class MarkersScreen extends StatelessWidget {
@@ -16,7 +17,7 @@ class MarkersScreen extends StatelessWidget {
         itemBuilder: (BuildContext buildContext, int index) => ListTile(
           title: Text(markers[index]['title']),
           subtitle: Text(markers[index]['description']),
-          trailing: Text(markers[index]['time']),
+          trailing: Text(CustomFunctions.getDateInSocialFormat(markers[index]['time'])),
         ),
       )),
     );
