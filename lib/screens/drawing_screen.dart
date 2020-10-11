@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:construction_app/model/drawing_model.dart';
-import 'package:construction_app/model/marker_model.dart';
 import 'package:construction_app/provider/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -66,16 +65,18 @@ class _DrawingScreenState extends State<DrawingScreen> {
                 Expanded(child: Container()),
                 FlatButton(
                     onPressed: () {
-                      MarkerModel markerModel = MarkerModel(
-                        x: position.global.dx,
-                        y: position.global.dy,
-                        time: DateTime.now().toString(),
-                        title: _title,
-                        description: _description,
-                      );
-                      // Provider.of<DataProvider>(context, listen: false)
-                      //     .addNewMarker(
-                      //         widget.drawingModel, widget.index, markerModel);
+                      Map marker = {
+                        'x': position.global.dx,
+                        'y': position.global.dy,
+                        'time': DateTime.now().toString(),
+                        'title': _title,
+                        'description': _description,
+                      };
+                      setState(() {
+                        _markers.add(marker);
+                      });
+                      Provider.of<DataProvider>(context, listen: false)
+                          .addNewMarker(widget.drawingModel, _markers);
                       Navigator.of(context).pop();
                     },
                     child: Text('Done'))
@@ -106,7 +107,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     );
   }
 
-  void _showMarkerDetails(MarkerModel marker) {
+  void _showMarkerDetails(Map marker) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -118,12 +119,12 @@ class _DrawingScreenState extends State<DrawingScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Title: ' + marker.title),
+              child: Text('Title: ' + marker['title']),
             ),
             SizedBox(height: 20.0),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Description: ' + marker.description),
+              child: Text('Description: ' + marker['description']),
             ),
             SizedBox(
               height: 20.0,
@@ -135,15 +136,14 @@ class _DrawingScreenState extends State<DrawingScreen> {
   }
 
   Stack _buildImageWithMarkers(double width) {
-    final List markersList = widget.drawingModel.markers;
-
+    final List markersList = _markers;
     List<Widget> markersWidget = [];
 
     markersList.forEach((marker) {
       markersWidget.add(
         Positioned(
-          left: marker.x,
-          top: marker.y,
+          left: marker['x'],
+          top: marker['y'],
           child: IconButton(
             icon: Icon(Icons.location_city_sharp),
             color: Colors.red,
@@ -170,7 +170,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     );
   }
 
-  PhotoView buildZoomableImage() {
+  PhotoView _buildZoomableImage() {
     return PhotoView(
       imageProvider: CachedNetworkImageProvider(
         widget.drawingModel.imageUrl,
@@ -215,7 +215,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
           height: height - 85.0,
           width: width,
           child:
-              _switchOn ? buildZoomableImage() : _buildImageWithMarkers(width),
+              _switchOn ? _buildZoomableImage() : _buildImageWithMarkers(width),
         ),
       ),
     );

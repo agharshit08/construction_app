@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:construction_app/model/drawing_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
 
 class DataProvider with ChangeNotifier {
   final _db = FirebaseFirestore.instance;
@@ -23,5 +23,23 @@ class DataProvider with ChangeNotifier {
       'title': title,
       'markers': []
     });
+  }
+
+  Future<void> addNewMarker(
+      DrawingModel drawingModel, List markers) async {
+    List firestoreCompatibleMarkers = [];
+    markers.forEach((marker) {
+      firestoreCompatibleMarkers.add({
+        'x': marker['x'],
+        'y': marker['y'],
+        'time': marker['time'],
+        'title': marker['title'],
+        'description': marker['description']
+      });
+    });
+    await _db
+        .collection('drawings')
+        .doc(drawingModel.drawingId)
+        .update({'markers': firestoreCompatibleMarkers});
   }
 }
