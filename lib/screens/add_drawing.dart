@@ -5,6 +5,7 @@ import 'package:construction_app/size_config.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 
 class AddDrawingScreen extends StatefulWidget {
@@ -71,7 +72,7 @@ class _AddDrawingScreenState extends State<AddDrawingScreen> {
         centerTitle: true,
         actions: [
           FlatButton(
-            onPressed: () {
+            onPressed: () async {
               if (_image == null) {
                 _showFlushbar('Please choose thumbnail');
                 return;
@@ -81,8 +82,14 @@ class _AddDrawingScreenState extends State<AddDrawingScreen> {
                 return;
               }
               // Add to db and list here.
-              Provider.of<DataProvider>(context, listen: false)
-                  .addNewDrawing(_title);
+              final ProgressDialog pr = ProgressDialog(context);
+              pr.style(
+                message: 'Uploading...',
+              );
+              await pr.show();
+              await Provider.of<DataProvider>(context, listen: false)
+                  .addNewDrawing(_title, _image);
+              await pr.hide();
               Navigator.of(context).pop();
               print('Submitted');
             },

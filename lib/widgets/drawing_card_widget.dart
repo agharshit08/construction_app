@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:construction_app/model/drawing_model.dart';
 import 'package:construction_app/screens/drawing_screen.dart';
 import 'package:construction_app/size_config.dart';
@@ -29,9 +30,17 @@ class DrawingCardWidget extends StatelessWidget {
       child: Card(
         child: Column(
           children: [
-            Image.asset(
-              drawingModel.imageUrl,
-              fit: BoxFit.cover,
+            CachedNetworkImage(
+              imageUrl: drawingModel.imageUrl,
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              placeholder: (context, url) => Center(child: Text('Loading Image...')),
               height: SizeConfig.blockSizeVertical * 30,
               width: SizeConfig.blockSizeVertical * 90,
             ),

@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:502769235778:android:b48e43642351244535badb",
+        "mobilesdk_app_id": "1:502769235778:android:e27d3b2864c1346035badb",
         "android_client_info": {
-          "package_name": "com.example.contruction"
+          "package_name": "com.example.construction_app"
         }
       },
       "oauth_client": [

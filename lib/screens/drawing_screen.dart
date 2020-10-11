@@ -70,9 +70,9 @@ class _DrawingScreenState extends State<DrawingScreen> {
                           time: DateTime.now().toString(),
                           title: _title,
                           description: _description);
-                      Provider.of<DataProvider>(context, listen: false)
-                          .addNewMarker(
-                              widget.drawingModel, widget.index, markerModel);
+                      // Provider.of<DataProvider>(context, listen: false)
+                      //     .addNewMarker(
+                      //         widget.drawingModel, widget.index, markerModel);
                       Navigator.of(context).pop();
                     },
                     child: Text('Done'))
@@ -134,8 +134,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
   }
 
   Stack _buildImageWithMarkers(double width) {
-    final List<MarkerModel> markersList =
-        Provider.of<DataProvider>(context).getMarkers(widget.index);
+    final List<MarkerModel> markersList = widget.drawingModel.markers;
 
     List<Widget> markersWidget = [];
 
