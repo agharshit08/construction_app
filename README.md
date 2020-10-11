@@ -1,16 +1,11 @@
-# construction_app
+# Construction App
 
-A new Flutter project.
+Features in the app:
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Add new drawings with thumbnail and title. Time of creation will be recorded automatically.
+- List all drawings in Home Page. Whenever new entry is added it will automatically be added to list because of Stream Builder.
+- Add markers to the drawing by double tapping and also specify title and description for the markers.
+- List all markers for specific drawing.
+- Click on marker to see details like title and description.
+- Pinch to zoom feature to zoom on image.
+- Time of creation is show in social format.

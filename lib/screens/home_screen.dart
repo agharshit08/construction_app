@@ -9,6 +9,7 @@ class HomeScreen extends StatelessWidget {
   static final String routeName = '/';
   @override
   Widget build(BuildContext context) {
+    /// Init size config based on portrait mode height and width.
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
@@ -16,6 +17,7 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: StreamBuilder(
+        /// Connect to drawings stored in Firestore and listen to any Create, Update, Delete changes in Firestore.
         stream: FirebaseFirestore.instance
             .collection('drawings')
             .orderBy('time')
@@ -26,6 +28,7 @@ class HomeScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
+          /// Convert the fetched docs to Docs based in Drawing Model.
           List<DrawingModel> fetchedDocs = snapshot.data.docs.map((doc) {
             return DrawingModel(
               drawingId: doc.id,
@@ -35,11 +38,13 @@ class HomeScreen extends StatelessWidget {
               title: doc['title'],
             );
           }).toList();
+
+          // Reverse the documents to show most recent drawing at top.
           List<DrawingModel> listOfDrawings = List.from(fetchedDocs.reversed);
 
           return listOfDrawings.length > 0
               ? Container(
-                  height: SizeConfig.blockSizeVertical * 85,
+                  height: SizeConfig.blockSizeVertical * 85, // set height to 85% of screen height.
                   child: ListView.builder(
                     itemCount: listOfDrawings.length,
                     itemBuilder: (BuildContext context, int index) =>

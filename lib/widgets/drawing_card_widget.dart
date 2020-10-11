@@ -5,6 +5,7 @@ import 'package:construction_app/screens/drawing_screen.dart';
 import 'package:construction_app/size_config.dart';
 import 'package:flutter/material.dart';
 
+/// To show thumbnail, creation time, title, number of markers for drawing in a card format.
 class DrawingCardWidget extends StatelessWidget {
   final DrawingModel drawingModel;
   DrawingCardWidget(this.drawingModel);
@@ -17,6 +18,7 @@ class DrawingCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      /// Push to drawing screen to see drawing in detail and also markers.
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -29,6 +31,7 @@ class DrawingCardWidget extends StatelessWidget {
       child: Card(
         child: Column(
           children: [
+            /// Cached Network image is useful to not load image from network again and again.
             CachedNetworkImage(
               imageUrl: drawingModel.imageUrl,
               imageBuilder: (context, imageProvider) => Container(

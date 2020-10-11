@@ -1,4 +1,6 @@
 class CustomFunctions {
+
+  /// Function to format the date in social format.
   static String getDateInSocialFormat(String timestamp) {
     final year = int.parse(timestamp.substring(0, 4));
     final month = int.parse(timestamp.substring(5, 7));

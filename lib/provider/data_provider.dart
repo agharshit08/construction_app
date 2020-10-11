@@ -10,6 +10,7 @@ class DataProvider with ChangeNotifier {
   final FirebaseStorage _storage =
       FirebaseStorage(storageBucket: 'gs://coupler-4cb82.appspot.com');
 
+  /// Add new drawing to Firestore and update the Home screen page automatically.
   Future<void> addNewDrawing(String title, File _image) async {
     final String filePath =
         'drawings' + DateTime.now().toString() + '/$title.png';
@@ -25,6 +26,7 @@ class DataProvider with ChangeNotifier {
     });
   }
 
+  /// Update list of markers for a specific drawing in Firestore.
   Future<void> addNewMarker(
       DrawingModel drawingModel, List markers) async {
     List firestoreCompatibleMarkers = [];

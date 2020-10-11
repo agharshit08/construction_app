@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+// Data Model for the drawings.
 class DrawingModel {
   final String drawingId;
   final String title;

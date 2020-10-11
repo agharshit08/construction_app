@@ -2,6 +2,7 @@ import 'package:construction_app/screens/add_drawing.dart';
 import 'package:construction_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
+/// Return all the routes from here.
 class Routes {
   static final _routes = {
     HomeScreen.routeName: (context) => HomeScreen(),

@@ -16,9 +16,11 @@ class AddDrawingScreen extends StatefulWidget {
 }
 
 class _AddDrawingScreenState extends State<AddDrawingScreen> {
-  String _title;
+  // Title and image labels for new drawing to be added.
+  String _title = '';
   File _image;
 
+  /// Show small alert if validation fails.
   void _showFlushbar(String message) {
     Flushbar(
       message: message,
@@ -26,6 +28,7 @@ class _AddDrawingScreenState extends State<AddDrawingScreen> {
     )..show(context);
   }
 
+  /// Text field for title.
   Padding _buildTextField() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -40,7 +43,8 @@ class _AddDrawingScreenState extends State<AddDrawingScreen> {
     );
   }
 
-  Future getImage() async {
+  /// Get image from user's gallery.
+  Future _getImage() async {
     final image = await ImagePicker().getImage(source: ImageSource.gallery);
     if (image == null) {
       _showFlushbar('Please choose thumbnail.');
@@ -51,6 +55,7 @@ class _AddDrawingScreenState extends State<AddDrawingScreen> {
     }
   }
 
+  /// Show image selected by user.
   Widget _buildThumbnailArea() {
     return _image == null
         ? Container()
@@ -64,6 +69,37 @@ class _AddDrawingScreenState extends State<AddDrawingScreen> {
           );
   }
 
+  FlatButton _buildSubmitButton(BuildContext context) {
+    return FlatButton(
+      onPressed: () async {
+        if (_image == null) {
+          _showFlushbar('Please choose thumbnail');
+          return;
+        }
+        if (_title.isEmpty) {
+          _showFlushbar('Please enter title');
+          return;
+        }
+        final ProgressDialog pr = ProgressDialog(context);
+        pr.style(
+          message: 'Uploading...',
+        );
+
+        /// Show progress dialog by the time drawing is uploaded to database.
+        await pr.show();
+        await Provider.of<DataProvider>(context, listen: false)
+            .addNewDrawing(_title, _image);
+        await pr.hide();
+        Navigator.of(context).pop();
+        print('Submitted');
+      },
+      child: Text(
+        'Submit',
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,33 +107,7 @@ class _AddDrawingScreenState extends State<AddDrawingScreen> {
         title: Text('Add Drawing'),
         centerTitle: true,
         actions: [
-          FlatButton(
-            onPressed: () async {
-              if (_image == null) {
-                _showFlushbar('Please choose thumbnail');
-                return;
-              }
-              if (_title.isEmpty) {
-                _showFlushbar('Please enter title');
-                return;
-              }
-              // Add to db and list here.
-              final ProgressDialog pr = ProgressDialog(context);
-              pr.style(
-                message: 'Uploading...',
-              );
-              await pr.show();
-              await Provider.of<DataProvider>(context, listen: false)
-                  .addNewDrawing(_title, _image);
-              await pr.hide();
-              Navigator.of(context).pop();
-              print('Submitted');
-            },
-            child: Text(
-              'Submit',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
+          _buildSubmitButton(context),
         ],
       ),
       body: Container(
@@ -107,7 +117,7 @@ class _AddDrawingScreenState extends State<AddDrawingScreen> {
             _buildThumbnailArea(),
             SizedBox(height: SizeConfig.blockSizeVertical * 5),
             RaisedButton(
-              onPressed: getImage,
+              onPressed: _getImage,
               child:
                   _image == null ? Text('Choose Image') : Text('Change Image'),
             ),

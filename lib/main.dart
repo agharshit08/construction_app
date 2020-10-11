@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Firebase initialization is necessary here.
   await Firebase.initializeApp();
   runApp(MyApp());
 }
@@ -14,15 +15,17 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    /// Data Provider to access the data and functions.
     return ChangeNotifierProvider(
       create: (context) => DataProvider(),
       child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.teal,
-          ),
-          initialRoute: HomeScreen.routeName,
-          routes: Routes.getRoutes()),
+        title: 'Construction App',
+        theme: ThemeData(
+          primarySwatch: Colors.teal,
+        ),
+        initialRoute: HomeScreen.routeName,
+        routes: Routes.getRoutes(),
+      ),
     );
   }
 }

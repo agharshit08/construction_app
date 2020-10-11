@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:construction_app/model/drawing_model.dart';
 import 'package:construction_app/provider/data_provider.dart';
 import 'package:construction_app/screens/markers_screen.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:positioned_tap_detector/positioned_tap_detector.dart';
@@ -18,11 +19,17 @@ class DrawingScreen extends StatefulWidget {
 }
 
 class _DrawingScreenState extends State<DrawingScreen> {
+  // To switch from zoom mode or markers mode.
   bool _switchOn = false;
-  String _title;
-  String _description;
+
+  // To hold title and description for new Marker to be added.
+  String _title = '';
+  String _description = '';
+
+  // Liat of all the markers in the drawing.
   List _markers;
 
+  /// To change the orientation of phone to landscape mode to better visualize drawing.
   @override
   void initState() {
     super.initState();
@@ -33,6 +40,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     ]);
   }
 
+  /// To change orientaion of phone again to Portrait mode when leaving the page.
   @override
   dispose() {
     SystemChrome.setPreferredOrientations([
@@ -44,6 +52,15 @@ class _DrawingScreenState extends State<DrawingScreen> {
     super.dispose();
   }
 
+  /// Show small alert if validation fails.
+  void _showFlushbar(String message) {
+    Flushbar(
+      message: message,
+      duration: Duration(seconds: 3),
+    )..show(context);
+  }
+
+  /// Add new marker by entering data in bottom sheet and pop off the sheet after done.
   void _addMarker(TapPosition position) {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -65,22 +82,29 @@ class _DrawingScreenState extends State<DrawingScreen> {
                 ),
                 Expanded(child: Container()),
                 FlatButton(
-                    onPressed: () {
-                      Map marker = {
-                        'x': position.global.dx,
-                        'y': position.global.dy,
-                        'time': DateTime.now().toString(),
-                        'title': _title,
-                        'description': _description,
-                      };
-                      setState(() {
-                        _markers.add(marker);
-                      });
-                      Provider.of<DataProvider>(context, listen: false)
-                          .addNewMarker(widget.drawingModel, _markers);
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Done'))
+                  onPressed: () {
+                    // Validate wheter fields are filled or not then setState to update the UI with new marker and add it to Database as well behind the scenes.
+                    if (_title.isEmpty || _description.isEmpty) {
+                      _showFlushbar('Please fill all the fields.');
+                      return;
+                    }
+                    Map marker = {
+                      'x': position.global.dx,
+                      'y': position.global.dy,
+                      'time': DateTime.now().toString(),
+                      'title': _title,
+                      'description': _description,
+                    };
+                    setState(() {
+                      _markers.add(marker);
+                    });
+                    Provider.of<DataProvider>(context, listen: false)
+                        .addNewMarker(widget.drawingModel, _markers);
+                    // Pop off bottom sheet.
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Done'),
+                )
               ],
             ),
             Padding(
@@ -108,6 +132,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     );
   }
 
+  /// Show marker details in bottom sheet.
   void _showMarkerDetails(Map marker) {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -140,6 +165,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     final List markersList = _markers;
     List<Widget> markersWidget = [];
 
+    /// Create markers widget to be displayed at appropriate positions.
     markersList.forEach((marker) {
       markersWidget.add(
         Positioned(
@@ -166,7 +192,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
             width: width,
           ),
         ),
-        ...markersWidget
+        ...markersWidget /// 
       ],
     );
   }
@@ -179,6 +205,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     );
   }
 
+  /// Switch from zoom to not zoom status.
   Row _switchZoomStatus() {
     return Row(
       children: [
@@ -199,11 +226,12 @@ class _DrawingScreenState extends State<DrawingScreen> {
     );
   }
 
+  /// Navigate to markers list.
   Widget _buildShowMarkersButton() {
     return FlatButton(
       onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => MarkersScreen(_markers)));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => MarkersScreen(_markers)));
       },
       child: Text(
         'View Markers',

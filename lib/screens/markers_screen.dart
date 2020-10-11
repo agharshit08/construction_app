@@ -5,6 +5,7 @@ class MarkersScreen extends StatelessWidget {
   final List markers;
   MarkersScreen(this.markers);
 
+  /// Show the list of markers in form of List View.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
